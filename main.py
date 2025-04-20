@@ -16,7 +16,7 @@ def main():
     prompt = input()
     # Take the command from the AI ​​model, the command in the model's response is extracted and cleaned
     response = ollama.generate(
-            model='linuxassistant',
+            model='llama3-linuxassistant',
             prompt=prompt
         )
     command = response["response"]
