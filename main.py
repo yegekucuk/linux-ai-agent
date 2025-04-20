@@ -1,17 +1,34 @@
 import ollama
 import os
 
-prompt = input()
+def is_dangerous(command:str) -> bool:
+    dangerous_keywords = ["rm -rf", ":(){", "mkfs", "dd if=", "shutdown", "reboot", "poweroff"]
+    if any(danger in command for danger in dangerous_keywords):
+        return True
+    else:
+        return False
 
-response = ollama.generate(
-        model='linuxassistant',
-        prompt=prompt
-    )
+def main():
+    prompt = input()
 
-command = response["response"]
-print(command)
-try:
-    os.system(f"echo '{command}' > linuxassistant.sh && chmod +x linuxassistant.sh && ./linuxassistant.sh")
+    response = ollama.generate(
+            model='linuxassistant',
+            prompt=prompt
+        )
 
-finally:
-    os.system("rm linuxassistant.sh")
+    command = response["response"]
+    command = command.strip().strip("```").replace("bash", "").strip()
+    print(command)
+    try:
+        if is_dangerous(command):
+            raise ValueError("Dangerous commands are not run.")
+        os.system(f"echo '{command}' > linuxassistant.sh && chmod +x linuxassistant.sh && ./linuxassistant.sh")
+    
+    except ValueError as ve:
+        print(ve)
+
+    finally:
+        os.system("rm linuxassistant.sh")
+
+if __name__ == '__main__':
+    main()
