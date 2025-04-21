@@ -94,8 +94,10 @@ def main():
         # Print the error
         print(ve)
     finally:
-        # Delete the temporary created bash file
-        os.system("rm linuxassistant.sh")
+        # Check if linuxassistant.sh exists
+        if os.path.exists("linuxassistant.sh"):
+            # Remove the file
+            os.remove("linuxassistant.sh")
 
 if __name__ == '__main__':
     main()
