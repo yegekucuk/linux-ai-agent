@@ -76,7 +76,8 @@ Before executing a command, Linux AI Agent checks for potentially dangerous keyw
 - `dd if=`
 - `shutdown`, `poweroff`, `reboot`
 
-These commands are **blocked** from execution to protect your system.
+Any use of the `sudo, su, cd, chmod, chown, exec, kill, pkill` commands are completely **banned**.
+In addition, many commands are **blocked** from execution to protect your system.
 
 ---
 
