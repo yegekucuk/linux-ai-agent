@@ -69,7 +69,10 @@ def is_dangerous(command:str) -> bool:
 
 def main():
     # Get the prompt
-    prompt = input()
+    prompt = input("Type your prompt: ")
+    # Exit the program with certain prompts
+    if prompt in ['q',"quit","bye"]:
+        exit(0)
     # Take the command from the AI ​​model, the command in the model's response is extracted and cleaned
     response = ollama.generate(
             model='llama3-linuxassistant',
@@ -77,17 +80,20 @@ def main():
         )
     command = response["response"]
     command = command.strip().strip("```").replace("bash", "").strip()
-    print(command)
-    
+    print(f"\nCommand:\n{command}\n")
     try:
         # Raise an error if the command is dangerous
         if is_dangerous(command):
             raise ValueError("Dangerous commands are not run.")
         # Ask for validation
-        validation = str(input("Type 'YES' to run the command: "))
-        if validation == "YES":
+        validation:str = None
+        while validation not in ["y", "", "yes", "n", "no"]:
+            validation = str(input("Run the command? (Y/n): "))
+            validation = validation.strip().lower()
+        if validation in ["y", "", "yes"]:
             # Run the command
             os.system(f"echo '{command}' > linuxassistant.sh && chmod +x linuxassistant.sh && ./linuxassistant.sh")
+            print("Successful.")
         else:
             raise ValueError("Permission is not given.")
     except ValueError as ve:
