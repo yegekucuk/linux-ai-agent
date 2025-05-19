@@ -1,7 +1,6 @@
 import pytest
 from main import is_dangerous
 
-# Test cases for is_dangerous function (91 dangerous, 88 safe)
 @pytest.mark.parametrize("command,expected", [
     # ---------- 71 Dangerous Commands ----------
     ("sudo rm -rf /", True),
@@ -198,6 +197,7 @@ from main import is_dangerous
     ("mongo --eval 'db.version()'", False),
     ("mysqladmin status", False),
     ("sqlite3 test.db 'SELECT * FROM table;'", False),
+    ("ip addr show", False)
 ])
 
 def test_is_dangerous(command, expected):

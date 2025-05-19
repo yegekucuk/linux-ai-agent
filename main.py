@@ -1,5 +1,6 @@
 import ollama
 import os
+import argparse
 
 # Function to check if given command is dangerous
 def is_dangerous(command:str) -> bool:
@@ -33,6 +34,12 @@ def is_dangerous(command:str) -> bool:
     return any(danger in command for danger in dangerous_keywords)
 
 def main():
+    # Argument Parsing
+    parser = argparse.ArgumentParser(description="Linux Assistant Agent")
+    parser.add_argument('--model', default='gemma', choices=['gemma', 'llama'], help='Choose your model: gemma or llama')
+    args = parser.parse_args()
+    model_name = f"{args.model}3-linuxassistant"
+
     # Get the prompt
     prompt = input("Type your prompt: ")
     # Exit the program with certain prompts
@@ -40,7 +47,7 @@ def main():
         exit(0)
     # Take the command from the AI ​​model, the command in the model's response is extracted and cleaned
     response = ollama.generate(
-            model='llama3-linuxassistant',
+            model=model_name,
             prompt=prompt
         )
     command = response["response"]

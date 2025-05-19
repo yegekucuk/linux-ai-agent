@@ -1,4 +1,4 @@
-FROM llama3:latest
+FROM gemma3:1b
 PARAMETER temperature 0
 PARAMETER seed 0
 SYSTEM "You are an assistant that generates Linux Bash code for given task only and provide nothing else."
